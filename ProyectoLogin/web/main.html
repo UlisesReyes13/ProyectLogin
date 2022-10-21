@@ -1,0 +1,84 @@
+
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style/bootstrap/css/bootstrap.min.css">
+        <link rel ="stylesheet" type ="text/css" href="style/bootstrap/css/Estilos.css">
+        <link type ="text/css" rel="stylesheet" href="style/sweetalert2/sweetalert2.min.css">
+        <link rel ="stylesheet" type="text/css" href="style/font_awesome_5_15_3/css/all.min.css">
+    </head>
+    <body>
+        <div class ="conteiner-fluid">
+            <div class ="row">
+                <div class="col-4" id="divDetalle">
+                    <div class="card m-lg-3">
+                        <div class ="card-header">
+                            <button class="btn btn-sm btn-outline-danger float-end" onclick="setDetalleVisible(false)"><i class="fas fa-times"></i></button>
+                            <br>
+                            <h5 class="text-center text-dark" id="title">Detalle de Libros</h5>
+                        </div>
+                        <div class ="card-body text-dark" id="formulario">
+                            <div class="form">
+                                <div class="my-3">
+                                    <label for="txtCodigo" class="form-label" hidden>C&oacute;digo Titulo</label>
+                                    <input id="txtCodigo" type="text" class="form-control" hidden/>
+                                </div>
+                                <div class="my-3">
+                                    <label for="txtTitulo" class="form-label">Titulo</label>
+                                    <input id="txtTitulo" type="text" class="form-control"/>
+                                </div>
+                                <div class="my-3">
+                                    <label for="txtTema" class="form-label">Tema</label>
+                                    <input id="txtTema" type="text" class="form-control"/>
+                                </div>
+                                <div class="my-3">
+                                    <label for="txtDescripcion" class="form-label">Descripci&oacute;n</label>
+                                    <textArea id="txtDescripcion" class="form-control"></textArea>
+                                </div>
+                                <div class="my-3 text-center">
+                                    <button class="btn btn-primary" onclick="guardar();"><i class="fas fa-save"></i>&nbsp;&nbsp;Guardar</button>
+                                    <button class="btn btn-danger mx-3" onclick="eliminar();"><i class="fas fa-trash"></i>&nbsp;&nbsp;Eliminar</button>
+                                    <button class="btn btn-success" onclick="limpiarFormulario();"><i class="fas fa-file"></i>&nbsp;&nbsp;Nuevo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class ="col-12" id="divTabla">
+                    <div class="card m-lg-3" >
+                        <div class="card-header">
+                            <button class="btn btn-sm btn-outline-danger float-end mx-4" onclick="cerrarModulo();">
+                                <i class="fas fa-times"></i>&nbsp;&nbsp;Cerrar M&oacute;dulo</button>
+                            <button class="btn btn-sm btn-outline-info float-end" onclick="setDetalleVisible(true);">
+                                <i class="fas fa-plus"></i>&nbsp;&nbsp;Nuevo</button>
+                            <h5 class="text-center text-dark" id="title">Cat&aacute;logo de Libros</h5>
+                        </div>
+                        <div class="card-body text-center" id="catalogos">
+                            <table class="table table-hover text-dark" >
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Titulo</th>
+                                        <th>Tema</th>
+                                        <th>Descripcion</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyLibros">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <script type="text/javascript" src="js/jquery/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="style/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="style/sweetalert2/sweetalert2.all.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript">
+            inicializarModulo();
+        </script>
+    </body>
+</html>
