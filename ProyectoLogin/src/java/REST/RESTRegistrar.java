@@ -29,43 +29,40 @@ public class RESTRegistrar {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response registrar(@QueryParam("idUsuario") @DefaultValue("0") int idUsuario,
-                              @QueryParam("nombre") String nombre,
-                              @QueryParam("apePaterno") String apePaterno,
-                              @QueryParam("apeMaterno") String apeMaterno,
-                              @QueryParam("nombreUsuario") String nombreUsuario,
-                              @QueryParam("contrasenia") String contrasenia){
-        
+            @QueryParam("nombre") String nombre,
+            @QueryParam("apePaterno") String apePaterno,
+            @QueryParam("apeMaterno") String apeMaterno,
+            @QueryParam("nombreUsuario") String nombreUsuario,
+            @QueryParam("contrasenia") String contrasenia) {
+
         String out = null;
-        
+
         ControllerRegistro cr = new ControllerRegistro();
-        UserDAO ud = new UserDAO();
         Usuario u = new Usuario();
-        
-        try{
-            if(ud.getByUsername(nombreUsuario)){
-                u.setIdUsuario(idUsuario);
-                u.setNombre(nombre);
-                u.setApePaterno(apePaterno);
-                u.setApeMaterno(apeMaterno);
-                u.setNombreUsuario(nombreUsuario);
-                u.setContrasenia(contrasenia);
-                System.out.println(nombre);
-                if(u.getIdUsuario() == 0 ){
+
+        try {
+            u.setIdUsuario(idUsuario);
+            u.setNombre(nombre);
+            u.setApePaterno(apePaterno);
+            u.setApeMaterno(apeMaterno);
+            u.setNombreUsuario(nombreUsuario);
+            u.setContrasenia(contrasenia);
+            System.out.println(nombre);
+
+            if (cr.insert(u) != 2) {
+                if (u.getIdUsuario() == 0) {
                     cr.insert(u);
-                }else{
-                    out = "{\"error\":\"A ocurrido un error al registrar\"}";
                 }
                 out = new Gson().toJson(u);
-            } else{
-                out = "{\"error\":\"Usuario ya registrado\"}";
+            } else {
+                out = "{\"error\":\"Usuario previamente registrado\"}";
             }
-        }
-        catch(Exception ex){
+
+        } catch (Exception ex) {
             ex.printStackTrace();
             out = "{\"error\":\"" + ex.toString() + "\"}";
         }
-        
         return Response.status(Response.Status.OK).entity(out).build();
     }
-    
+
 }

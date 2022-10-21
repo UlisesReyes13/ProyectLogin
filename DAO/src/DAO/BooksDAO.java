@@ -51,10 +51,12 @@ public class BooksDAO {
         return idBookGenerado;
     }
 
-    public void update(Book b) throws Exception {
-        String sql = "UPDATE book SET titulo = ?, tema = ?, descripcion = ? WHERE idLibro";
+    public int update(Book b) throws Exception {
+        String sql = "UPDATE book SET titulo = ?, tema = ?, descripcion = ? WHERE idLibro = ?";
 
         ConexionMySQL connMySQL = new ConexionMySQL();
+        
+        int idBookGenerado = -1;
 
         Connection conn = connMySQL.open();
 
@@ -65,11 +67,22 @@ public class BooksDAO {
         pstmt.setString(3, b.getDescripcion());
         pstmt.setInt(4, b.getIdLibro());
 
-        pstmt.execute();
+        pstmt.executeUpdate();
+        
+        ResultSet rs = null;
+        
+        rs = pstmt.getGeneratedKeys();
+        
+        if(rs.next()){
+            idBookGenerado = rs.getInt(1);
+            b.setIdLibro(idBookGenerado);
+        }
 
         pstmt.close();
         conn.close();
         connMySQL.close();
+        
+        return idBookGenerado;
     }
 
     public void delete(int idLibro) throws Exception {

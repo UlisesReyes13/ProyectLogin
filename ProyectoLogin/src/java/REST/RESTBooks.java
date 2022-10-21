@@ -1,8 +1,14 @@
 package REST;
 
 import DAO.BooksDAO;
+import ProyectoLogin_Controller.ControllerBooks;
 import ProyectoLogin_Model.Book;
 import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -30,7 +36,7 @@ public class RESTBooks {
             @FormParam("descripcion") @DefaultValue("") String descripcion) {
         String out = null;
 
-        BooksDAO bdao = new BooksDAO();
+        ControllerBooks cb = new ControllerBooks();
 
         Book book = new Book();
 
@@ -41,9 +47,9 @@ public class RESTBooks {
             book.setDescripcion(descripcion);
 
             if (book.getIdLibro() == 0) {
-                bdao.insert(book);
+                cb.insert(book);
             } else {
-                bdao.update(book);
+                cb.update(book);
             }
             out = new Gson().toJson(book);
         } catch (Exception e) {
@@ -63,10 +69,10 @@ public class RESTBooks {
     public Response delete(@FormParam("idLibro") @DefaultValue("0") int id) {
         String out = null;
 
-        BooksDAO bdao = new BooksDAO();
+        ControllerBooks cb = new ControllerBooks();
 
         try {
-            bdao.delete(id);
+            cb.delete(id);
         } catch (Exception e) {
             //Imprimimos el error en la consola del servidor:
             e.printStackTrace();
@@ -83,17 +89,49 @@ public class RESTBooks {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll(@QueryParam("filtro") @DefaultValue("") String filtro) {
         String out = null;
-        BooksDAO bdao = new BooksDAO();
+        ControllerBooks cb = new ControllerBooks();
         try {
-
             List<Book> productos = null;
-            productos = bdao.getAll(filtro);
+            productos = cb.getAll(filtro);
             out = new Gson().toJson(productos);
 
         } catch (Exception e) {
             e.printStackTrace();
             out = "{\"error\":\"" + e.toString() + "\"}";
         }
+        return Response.status(Response.Status.OK).entity(out).build();
+    }
+    
+    @Path("getAllAPI")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllAPI() throws Exception {
+        String out = null;
+        URL url = new URL("");
+        
+        HttpURLConnection conHttp = (HttpURLConnection) url.openConnection();
+        conHttp.setRequestMethod("GET");
+        conHttp.setDoInput(true);
+        
+        StringBuilder response = new StringBuilder();
+        
+        BufferedReader entrada = new BufferedReader(new InputStreamReader(conHttp.getInputStream()));
+        
+        String lineas;
+        
+        while((lineas = entrada.readLine()) != null){
+            response.append(lineas);
+        }
+        
+        entrada.close();
+        
+        try{
+            out = response.toString();
+        }catch(Exception ex){
+            ex.printStackTrace();
+            out = "{\"error\":\"" + ex.toString() + "\"}";
+        }
+        
         return Response.status(Response.Status.OK).entity(out).build();
     }
 }

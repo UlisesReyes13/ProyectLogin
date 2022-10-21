@@ -74,9 +74,19 @@ function eliminar()
 function refrescarTabla()
 {
     var contenido = '';
+    var escuela = $('#cmbEscuela').val();
+    
+    var url;
+    
+    if(escuela == 'Otra Escuela'){
+        url = "api/libros/getAllAPI";
+    }
+    else{
+        url = "api/libros/getAll";
+    }
     $.ajax({
                 type : "GET",
-                url  : "api/libros/getAll"
+                url  : url
            })
     .done(function (data){
         if(data.error != null)
@@ -156,6 +166,10 @@ function cerrarModulo()
 {
     $("#contenedorPrincipal").html('');
 }
+
+
+
+//getAll para los libros de otros
 
 
 
