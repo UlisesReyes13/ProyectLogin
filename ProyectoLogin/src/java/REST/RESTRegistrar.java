@@ -49,13 +49,16 @@ public class RESTRegistrar {
             u.setContrasenia(contrasenia);
             System.out.println(nombre);
 
-            if (cr.insert(u) != 2) {
-                if (u.getIdUsuario() == 0) {
+            if(cr.insert(u) != 1){
+                System.out.println(nombre);
+                if(u.getIdUsuario() == 0 ){
                     cr.insert(u);
+                }else{
+                    out = "{\"error\":\"A ocurrido un error al registrar\"}";
                 }
                 out = new Gson().toJson(u);
-            } else {
-                out = "{\"error\":\"Usuario previamente registrado\"}";
+            } else{
+                out = "{\"error\":\"Usuario ya registrado\"}";
             }
 
         } catch (Exception ex) {

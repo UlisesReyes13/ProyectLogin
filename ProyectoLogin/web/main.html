@@ -12,7 +12,7 @@
     <body>
         <div class ="conteiner-fluid">
             <div class ="row">
-                <div class="col-4" id="divDetalle">
+                <div class="col-6" id="divDetalle">
                     <div class="card m-lg-3">
                         <div class ="card-header">
                             <button class="btn btn-sm btn-outline-danger float-end" onclick="setDetalleVisible(false)"><i class="fas fa-times"></i></button>
@@ -22,8 +22,8 @@
                         <div class ="card-body text-dark" id="formulario">
                             <div class="form">
                                 <div class="my-3">
-                                    <label for="txtCodigo" class="form-label" hidden>C&oacute;digo Titulo</label>
-                                    <input id="txtCodigo" type="text" class="form-control" hidden/>
+                                    <label for="txtCodigo" class="form-label" hidden="">C&oacute;digo Titulo</label>
+                                    <input id="txtCodigo" type="text" class="form-control" />
                                 </div>
                                 <div class="my-3">
                                     <label for="txtTitulo" class="form-label">Titulo</label>
@@ -38,7 +38,7 @@
                                     <textArea id="txtDescripcion" class="form-control"></textArea>
                                 </div>
                                 <div class="my-3 text-center">
-                                    <button class="btn btn-primary" onclick="guardar();"><i class="fas fa-save"></i>&nbsp;&nbsp;Guardar</button>
+                                    <button class="btn btn-primary" onclick="guardar();" id="botonSave"><i class="fas fa-save"></i>&nbsp;&nbsp;Guardar</button>
                                     <button class="btn btn-danger mx-3" onclick="eliminar();"><i class="fas fa-trash"></i>&nbsp;&nbsp;Eliminar</button>
                                     <button class="btn btn-success" onclick="limpiarFormulario();"><i class="fas fa-file"></i>&nbsp;&nbsp;Nuevo</button>
                                 </div>
@@ -54,8 +54,13 @@
                             <button class="btn btn-sm btn-outline-info float-end" onclick="setDetalleVisible(true);">
                                 <i class="fas fa-plus"></i>&nbsp;&nbsp;Nuevo</button>
                             <h5 class="text-center text-dark" id="title">Cat&aacute;logo de Libros</h5>
+                             <label class="text-dark">Selecciona la escuela</label>
+                            <select id="cmbEscuelas" class="form-select">
+                                <option value="Otra Escuela">NAU</option>
+                                <option value="UTL" selected>UTL</option>
+                            </select>
                         </div>
-                        <div class="card-body text-center" id="catalogos">
+                        <div class="card-body text-center" id="catalogos">                           
                             <table class="table table-hover text-dark" >
                                 <thead>
                                     <tr>

@@ -3,7 +3,11 @@ var libros = [];
 function inicializarModulo()
 {
     setDetalleVisible(false);
-    refrescarTabla();
+    
+    $('#cmbEscuelas').on('change', function()
+    {
+        refrescarTabla();
+    });
 }
 
 function guardar()
@@ -14,14 +18,15 @@ function guardar()
     libro.titulo = $('#txtTitulo').val();
     libro.tema = $('#txtTema').val();
     libro.descripcion = $('#txtDescripcion').val();
-    
+
     if($('#txtCodigo').val().length > 0)
     {
-        libros.id = parseInt($('#txtCodigo').val());
+        libro.id = parseInt($('#txtCodigo').val());
+        
     }
     $.ajax({
                 type : "POST",
-                url  : "api/libros/save",
+                url  : "api/libros/RegistrarLibroH",
                 data : {
                             idLibro : libro.id,
                             titulo : libro.titulo,
@@ -74,19 +79,44 @@ function eliminar()
 function refrescarTabla()
 {
     var contenido = '';
-    var escuela = $('#cmbEscuela').val();
+    var escuela = $('#cmbEscuelas').val();
     
     var url;
     
-    if(escuela == 'Otra Escuela'){
-        url = "api/libros/getAllAPI";
+    if(escuela === "Otra Escuela"){
+        
+        $.ajax({
+                type : "GET",
+                url  : "api/libros/getAllAPI"
+           })
+    .done(function (data){
+        if(data.error != null)
+        {
+           Swal.fire('Error', data.error, "warning"); 
+        }
+        else
+        {
+            
+            for (var i = 0; i < data.length; i++)
+            {
+                libros = data;
+                contenido = contenido + '<tr>' + 
+                                            '<td>' + libros[i].idLibro+ '</td>' +
+                                            '<td>' + libros[i].titulo + '</td>' +
+                                            '<td>' + libros[i].temaLibro + '</td>' +
+                                            '<td>' + libros[i].descripcionLibro + '</td>' +
+                                            '<td><a href="#" onclick="mostrarDetalle('+ libros[i].idLibro + ');"><i class="fas fa-eye text-dark"></i></a>' + '</td>' +
+                                        '</tr>';
+            }
+            $('#tbodyLibros').html(contenido);
+        }
+    });
+    $('#botonSave').html("<i class='fas fa-save'></i>&nbsp;&nbsp;Guardar en otra escuela");
     }
     else{
-        url = "api/libros/getAll";
-    }
-    $.ajax({
+        $.ajax({
                 type : "GET",
-                url  : url
+                url  : "api/libros/getAll"
            })
     .done(function (data){
         if(data.error != null)
@@ -109,6 +139,13 @@ function refrescarTabla()
             $('#tbodyLibros').html(contenido);
         }
     });
+    $('#botonSave').html("<i class='fas fa-save'></i>&nbsp;&nbsp;Guardar");
+    }
+    
+   
+    
+    
+    
 }
 
 function mostrarDetalle(idLibro)
@@ -119,8 +156,8 @@ function mostrarDetalle(idLibro)
     
     $('#txtCodigo').val(l.idLibro);
     $('#txtTitulo').val(l.titulo);
-    $('#txtTema').val(l.tema);
-    $('#txtDescripcion').val(l.descripcion);
+    $('#txtTema').val(l.temaLibro);
+    $('#txtDescripcion').val(l.descripcionLibro);
     
     setDetalleVisible(true);
 }
@@ -151,12 +188,12 @@ function setDetalleVisible(valor)
     if(valor)
     {
         $('#divTabla').removeClass('col-12');
-        $('#divTabla').addClass('col-8');
+        $('#divTabla').addClass('col-6');
         $('#divDetalle').show();
     }
     else
     {
-        $('#divTabla').removeClass('col-8');
+        $('#divTabla').removeClass('col-6');
         $('#divTabla').addClass('col-12');
         $('#divDetalle').hide();
     }
@@ -166,10 +203,4 @@ function cerrarModulo()
 {
     $("#contenedorPrincipal").html('');
 }
-
-
-
-//getAll para los libros de otros
-
-
 

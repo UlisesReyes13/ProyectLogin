@@ -1,6 +1,7 @@
 package ProyectoLogin_Controller;
 
 import DAO.UserDAO;
+import ProyectoLogin_AppService.UserAppService;
 import ProyectoLogin_Model.Usuario;
 
 
@@ -11,14 +12,11 @@ import ProyectoLogin_Model.Usuario;
 public class ControllerRegistro {
 
    public int insert(Usuario u) throws Exception {
-       UserDAO ud = new UserDAO();
+       UserAppService us = new UserAppService();
        
-       if(ud.getByUsername(u.getNombreUsuario())){
-           int id = ud.insert(u);
-           return id;
-       }else {
-           int id = 1;
-           return id;
-       }
+       int id;
+       id = us.save(u);
+       
+       return id;
    }
 }
